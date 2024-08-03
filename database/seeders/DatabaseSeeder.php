@@ -53,16 +53,17 @@ class DatabaseSeeder extends Seeder
             ->implode('_');
 
         })->map(function ($groupedMessages) {
+           
             return [
                 "user_id1" => $groupedMessages->first()->sender_id,
-                "user_id1" => $groupedMessages->first()->recever_id,
+                "user_id2" => $groupedMessages->first()->recever_id,
                 "last_message_id" => $groupedMessages->last()->id,
                 "created_at" => new \Carbon\Carbon(),
                 "updated_at" => new \Carbon\Carbon()
             ];
         });
 
-        Conversation::insertOrIgnore($conversations->toArray());
+        Conversation::insert($conversations->toArray());
 
 
         $this->command->info("Seedage terminé avec succès !"); //loguer la complétion du seedage
