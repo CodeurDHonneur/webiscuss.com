@@ -91,18 +91,23 @@ class Group extends Model
         return $this->belongsTo(User::class);
     }
 
-    public static function getGroupsExcept(User $user){
+     /**
+     * Récupère les groupes auxquels l'utilisateur connecté appartient et les messages associés
+     * @param \App\Models\User $user
+     * @return \Illuminate\Support\Collection
+     */
+    public static function getGroupsExcept(User $user) {
         $userId = $user->id;
 
-        $query = self::select(["groupd.*", "messages.message as last_message", "messages.created_at as last_message_date"])
-        ->join("group_user", "group_user_group_id", "=", "group_id")
+        $query = self::select(["groups.*", "messages.message as last_message", 
+        "messages.created_at as last_message_date"])
+        ->join("group_user", "group_user.group_id", "=", "groups.id")
         ->leftJoin("messages", "messages.id", "=", "groups.last_message_id")
         ->where("group_user.user_id", $userId)
         ->orderByDesc("messages.created_at")
         ->orderBy("groups.name");
 
         return $query->get();
-
     }
 
     /**
