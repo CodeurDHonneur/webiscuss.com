@@ -1,13 +1,18 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
+import ColorMode from '@/Components/ColorMode.vue';
 
 const showingNavigationDropdown = ref(false);
+onMounted(() => {
+  
+  console.log('Authenticated Layout');
+})
 </script>
 
 <template>
@@ -34,8 +39,11 @@ const showingNavigationDropdown = ref(false);
                 </NavLink>
               </div>
             </div>
-
+            
             <div class="hidden sm:flex sm:items-center sm:ms-6">
+              <!-- Color mode Switch -->
+              <ColorMode />
+
               <!-- Settings Dropdown -->
               <div class="ms-3 relative">
                 <Dropdown align="right" width="48">
@@ -119,6 +127,8 @@ const showingNavigationDropdown = ref(false);
 
           <!-- Responsive Settings Options -->
           <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
+             <!-- Color mode Switch -->
+             <ColorMode />
             <div class="px-4">
               <div class="font-medium text-base text-gray-800 dark:text-gray-200">
                 {{ $page.props.auth.user.name }}
