@@ -85,4 +85,25 @@ class Conversation extends Model
         return $this->belongsTo(User::class, 'user_id2');
     }
 
+    /**
+     * Fonction qui récupère toutes les conversations associées à l'utilisateur connecté
+     * @return void
+     */
+    public static function getConversationForSidebar(User $user){
+        //récupérer tous les utilisateurs autre que celui connecté
+        $users = User::getUsersExcept($user);
+
+
+        // récupérer tous les groupes auxquels l'utilisateur connecté appartien
+        $groups = Group::getGroupsExcept($user);
+
+
+        //renvoyer toutes les conversations effectuées par l'utilisateur avec les utilisateurs et les gropes
+        return $users->map(function (User $user) {
+            return $user->toConversationArray();
+        })
+        ->concat($groups->map(function (Group $group) {
+            return $group->toConversationArray();
+        }));
+    }
 }

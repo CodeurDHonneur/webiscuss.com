@@ -110,4 +110,43 @@ class User extends Authenticatable
     public function messages(){
         return $this->hasMany(Message::class);
     }
+
+    public static function getUsersExcept(User $user){
+        $userId = $user->id;
+
+        $query = User::select(["users.*", "messages.message as last_message", "messages.created_at as last_message_date"])
+        ->where("users.id", "!=", $userId)
+        ->where(!$user->is_admin, function ($query) use ($userId) {
+            $query->whereNull("users.blocked_at");
+        })
+        ->leftJoin("conversations", function ($join) use ($userId) {
+            $join->on("conversations.user_id1", "=", "users.id")
+            ->where("conversations.user_id2", "=", $userId);
+        })
+        ->leftJoin("messages", "messages.id", "=", "conversations.last_message_id")
+        ->orderByRaw("IFNULL(users.blocked_at, 1)")
+        ->orderBy("messages.created_at", "desc")
+        ->orderBy("users.name");
+
+        return $query->get();
+    }
+
+    /**
+     * Méthode qu transforme le modèle en tableau
+     * @return array
+     */
+    public function toConversationArray(){
+        return [
+            "id" => $this->id,
+            "name" => $this->name,
+            "is_group" => false,
+            "is_user" => false,
+            "is_admin" => $this->is_admin,
+            "created_at" => $this->created_at,
+            "updated_at" => $this->updated_at,
+            "blocked_at" => $this->blocked_at,
+            "last_message" => $this->last_message,
+            "last_message_date" => $this->last_message_date
+        ];
+    }
 }

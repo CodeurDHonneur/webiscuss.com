@@ -91,5 +91,37 @@ class Group extends Model
         return $this->belongsTo(User::class);
     }
 
+    public static function getGroupsExcept(User $user){
+        $userId = $user->id;
 
+        $query = self::select(["groupd.*", "messages.message as last_message", "messages.created_at as last_message_date"])
+        ->join("group_user", "group_user_group_id", "=", "group_id")
+        ->leftJoin("messages", "messages.id", "=", "groups.last_message_id")
+        ->where("group_user.user_id", $userId)
+        ->orderByDesc("messages.created_at")
+        ->orderBy("groups.name");
+
+        return $query->get();
+
+    }
+
+    /**
+     * Méthode qu transforme le modèle en tableau
+     * @return array
+     */
+    public function toConversationArray(){
+        return [
+            "id" => $this->id,
+            "name" => $this->name,
+            "description" => $this->description,
+            "is_group" => true,
+            "owner_id" => $this->owner_id,
+            "users" => $this->users,
+            "user_ids" => $this->users->pluck('id'),
+            "created_at" => $this->created_at,
+            "updated_at" => $this->updated_at,
+            "last_message" => $this->last_message,
+            "last_message_date" => $this->last_message_date
+        ];
+    }
 }
