@@ -79,8 +79,8 @@ const sortedConversations = computed<Conversation[]>(
 
 const filteredConversations = computed<Conversation[]>(() => {
   return  sortedConversations.value.filter((conversation) => {
-      const searchTerm = search.value.toLocaleLowerCase();
-      return conversation.name.toLocaleLowerCase().includes(searchTerm) || conversation?.email.toLocaleLowerCase().includes(searchTerm)
+      const searchTerm = search.value.toLowerCase();
+      return conversation.name.toLowerCase().includes(searchTerm) || conversation.email?.toLowerCase().includes(searchTerm)
     })
 });
 
