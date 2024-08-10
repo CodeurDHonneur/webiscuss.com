@@ -1,15 +1,24 @@
 <template>
-  <Link href="#" class="flex items-center gap-2 p-2">
+  <Link
+    href="#"
+    class="flex items-center gap-2 p-2 hover:bg-slate-400/30 dark:hover:bg-slate-400/30 transition-all"
+  >
     <!-- Affichage de profil pour les users simples -->
-     <UserAvatar :avatar="conversation.avatar" :name="conversation.name" v-if="conversation.is_user"/>
+    <UserAvatar
+      :avatar="conversation.avatar"
+      :name="conversation.name"
+      v-if="conversation.is_user"
+      :isOnline="isOnline"
+    />
 
-     <!-- Affichage de profil pour les groupes -->
-    <GroupAvatar v-if="conversation.is_group"/>
-
+    <!-- Affichage de profil pour les groupes -->
+    <GroupAvatar v-if="conversation.is_group" />
 
     <div class="flex-1 maw-w-full overflow-hidden text-xs">
       <div class="flex gap-1 justify-between items-center">
-        <h3 class="font-semibold text-sm text-nowrap text-ellipsis truncate">{{ conversation.name }}</h3>
+        <h3 class="font-semibold text-sm text-nowrap text-ellipsis truncate">
+          {{ conversation.name }}
+        </h3>
         <span class="text-nowrap">
           {{ conversation.last_message_date }}
         </span>
@@ -21,7 +30,7 @@
   </Link>
 </template>
 
-<script setup lang='ts'>
+<script setup lang="ts">
 import { Conversation } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
 import UserAvatar from './UserAvatar.vue';
@@ -31,6 +40,7 @@ const page = usePage();
 
 const props = defineProps<{
   conversation: Conversation;
+  isOnline: boolean;
 }>();
 
 const currentUser = page.props.auth.user;

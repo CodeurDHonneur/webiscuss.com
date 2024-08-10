@@ -5,23 +5,24 @@
         <img :src="avatar" :alt="`Photo de profil de ${name}`" />
       </div>
     </div>
-    <div class="avatar placeholder" v-else>
+    <div class="avatar placeholder" :class="onlineClass" v-else>
       <div class="bg-neutral text-neutral-content w-10 rounded-full">
         <span class="text-lg">
           {{ formatUserName(name) }}
         </span>
       </div>
     </div>
-   
   </div>
 </template>
 
-<script setup lang='ts'>
+<script setup lang="ts">
 import { User } from '@/types';
+import { computed } from 'vue';
 
 const props = defineProps<{
   avatar?: string;
   name: string;
+  isOnline: boolean;
 }>();
 
 function formatUserName(name: string): string {
@@ -29,6 +30,8 @@ function formatUserName(name: string): string {
   const initials = name.match(/\b\w/g) || [];
   return initials.join('').toUpperCase();
 }
+
+const onlineClass = computed<string>(() => (props.isOnline ? 'online' : 'offline'));
 </script>
 
 <style scoped></style>
