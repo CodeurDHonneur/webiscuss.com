@@ -29,6 +29,7 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
 export interface Conversation {
   id:                number;
   name:              string;
+  avatar?:           string;
   email?:            string;
   is_group:          boolean;
   is_user?:          boolean;

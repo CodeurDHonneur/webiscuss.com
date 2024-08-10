@@ -1,5 +1,5 @@
 import { useDark } from '@vueuse/core';
 
-export const isDark = () => {
-  storagekey: 'wediscuss-theme-apparence';
-};
+export const isDark = useDark({
+  storageKey: 'wediscuss-theme-apparence'
+});
