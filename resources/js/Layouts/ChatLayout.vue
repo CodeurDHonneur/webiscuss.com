@@ -12,7 +12,7 @@
             <Icon class="h-5 w-5" icon="heroicons:pencil-square" />
           </button>
         </div>
-        <div class="p-3 border-b border-border sticky top-[3rem] z-10">
+        <div class="p-3 border-b border-secondary sticky top-[3rem] z-10">
           <TextInput v-model="search" class="w-full" placeholder="Rechercher un ami ou un groupe"/>
         </div>
       </div>
