@@ -1,8 +1,12 @@
 <template>
   <div class="flex max-w-full">
     <Link
-      href="#"
-      class="flex items-center gap-2 p-2 hover:bg-slate-400/30 dark:hover:bg-slate-400/30 transition-all w-full"
+      :href="
+        conversation.is_user
+          ? route('chat.user', conversation.id)
+          : route('chat.group', conversation.id)
+      "
+      class="w-full inline-flex items-center gap-2 p-2 hover:bg-slate-400/30 transition-all"
     >
       <!-- Affichage de profil pour les users simples -->
       <UserAvatar
@@ -19,17 +23,17 @@
             {{ conversation.name }}
           </h3>
           <span v-if="conversation.last_message_date" class="text-nowrap italic">
-          {{ conversation.last_message_date }}
-        </span>
+            {{ conversation.last_message_date }}
+          </span>
         </div>
-        <p 
-        v-if="conversation.last_message" 
-        class="text-xs text-nowrap overflow-hidden text-ellipsis truncate"
+        <p
+          v-if="conversation.last_message"
+          class="text-xs text-nowrap overflow-hidden text-ellipsis truncate"
         >
           {{ conversation.last_message }}
         </p>
       </div>
-      <UserOptionsDropdown :conversation="conversation" class="inline-block cursor-pointer"/>
+      <UserOptionsDropdown :conversation="conversation" class="inline-block cursor-pointer" />
     </Link>
   </div>
 </template>
