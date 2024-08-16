@@ -10,7 +10,7 @@ import ColorMode from '@/Components/ColorMode.vue';
 
 const showingNavigationDropdown = ref(false);
 onMounted(() => {
-  console.log('Authenticated Layout');
+  
 });
 </script>
 

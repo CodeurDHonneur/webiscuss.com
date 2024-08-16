@@ -5,9 +5,13 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
 
 Route::middleware(['auth', 'verified'])->group(function() {
     Route::get('/', [HomeController::class, 'index'])->name('dashboard');
+
+    Route::post('user/block/{id}', [UserController::class, 'blockUser'])->name('user.block');
+    Route::post('user/unblock/{id}', [UserController::class, 'unblockUser'])->name('user.unblock');
 });
 
 
