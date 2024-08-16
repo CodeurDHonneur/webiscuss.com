@@ -16,7 +16,6 @@
 </template>
 
 <script setup lang="ts">
-import { User } from '@/types';
 import { computed } from 'vue';
 
 const props = defineProps<{

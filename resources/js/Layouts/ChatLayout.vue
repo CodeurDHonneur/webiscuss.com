@@ -13,7 +13,7 @@
           </button>
         </div>
         <div class="p-3 border-b border-border sticky top-[3rem] z-10">
-          <TextInput v-model="search" class="w-full" />
+          <TextInput v-model="search" class="w-full" placeholder="Rechercher un ami ou un groupe"/>
         </div>
       </div>
       <div
@@ -28,9 +28,9 @@
       </div>
     </div>
 
-    <div class="flex-1">
-      Messages users connectés
-      {{ onlineUserObj }}
+    <!-- Zone d'affichage des messages -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+      Messages
       <!-- Item de conversation pour chaque conversation -->
     </div>
   </div>
@@ -54,20 +54,21 @@ const search = ref<string>('');
 
 const sortedConversations = computed<Conversation[]>(() => {
   return localConversations.value.sort((a, b) => {
-    //on recherche les personnes bloquées d'abord
+    // on recherche les personnes bloquées d'abord
     if (a.blocked_at && b.blocked_at) {
       return a.blocked_at > b.blocked_at ? 1 : -1;
     } else if (a.blocked_at) {
       return 1;
-    } else {
+    } else if (b.blocked_at) {
       return -1;
     }
 
+    // on recherche en fonction de la date du message
     if (a.last_message_date && b.last_message_date) {
       return b.last_message_date.localeCompare(a.last_message_date);
     } else if (a.last_message_date) {
       return -1;
-    } else if (a.last_message_date) {
+    } else if (b.last_message_date) {
       return 1;
     } else {
       return 0;
@@ -77,13 +78,14 @@ const sortedConversations = computed<Conversation[]>(() => {
 
 const filteredConversations = computed<Conversation[]>(() => {
   return sortedConversations.value.filter((conversation) => {
-    const searchTerm = search.value.toLowerCase();
+    const searchTerm = search.value.toLocaleLowerCase();
     return (
       conversation.name.toLowerCase().includes(searchTerm) ||
       conversation.email?.toLowerCase().includes(searchTerm)
     );
   });
 });
+
 
 // Utilisateurs connectés
 const onlineUserObj = ref<Record<string, User>>({});
